@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://huv6ew1jtlmp"]
+[gd_scene load_steps=13 format=3 uid="uid://huv6ew1jtlmp"]
 
 [ext_resource type="Script" path="res://3d_softbody/3d_softbody.gd" id="1_ns4o7"]
+[ext_resource type="Script" path="res://3d_softbody/SphereBody.gd" id="2_42ohb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_aenru"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -16,6 +17,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_u41xp"]
+radius = 0.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lxf8i"]
 albedo_color = Color(0, 0.890196, 0.890196, 1)
@@ -30,6 +32,9 @@ subdivide_depth = 31
 [sub_resource type="BoxMesh" id="BoxMesh_pylk4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fc3ba"]
+size = Vector3(10, 0.5, 7.38879)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_csruc"]
 size = Vector3(10, 0.5, 5)
 
 [node name="3DSoftbody" type="Node3D"]
@@ -42,21 +47,44 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ekedb")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="SphereBody" type="StaticBody3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.11584, 0)
+script = ExtResource("2_42ohb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SphereBody"]
 shape = SubResource("SphereShape3D_u41xp")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SphereBody"]
 material_override = SubResource("StandardMaterial3D_lxf8i")
 mesh = SubResource("SphereMesh_sawiy")
 
 [node name="SoftBody3D" type="SoftBody3D" parent="."]
 unique_name_in_owner = true
 mesh = SubResource("PlaneMesh_dvspj")
-linear_stiffness = 0.1
+total_mass = 10.01
+linear_stiffness = 0.2
+ray_pickable = false
+pinned_points = [0, 32, 1088, 1056]
+attachments/0/point_index = 0
+attachments/0/spatial_attachment_path = NodePath("")
+attachments/0/offset = Vector3(0, 0, 0)
+attachments/1/point_index = 32
+attachments/1/spatial_attachment_path = NodePath("")
+attachments/1/offset = Vector3(0, 0, 0)
+attachments/2/point_index = 1088
+attachments/2/spatial_attachment_path = NodePath("")
+attachments/2/offset = Vector3(0, 0, 0)
+attachments/3/point_index = 1056
+attachments/3/spatial_attachment_path = NodePath("")
+attachments/3/offset = Vector3(0, 0, 0)
+
+[node name="SoftBody3D2" type="SoftBody3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -0.0292825, -0.999571, 0, 0.999571, -0.0292825, 0, 2.93734, -3.04681)
+mesh = SubResource("PlaneMesh_dvspj")
+total_mass = 10.01
+linear_stiffness = 0.7
 ray_pickable = false
 pinned_points = [0, 32, 1088, 1056]
 attachments/0/point_index = 0
@@ -80,8 +108,18 @@ transform = Transform3D(0.999981, 0.0043186, -0.00437203, 0, 0.71144, 0.702747, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.469249, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
-transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 5, 0, 0, 0)
+transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 7.41602, 0, 0, 0)
 mesh = SubResource("BoxMesh_pylk4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
 shape = SubResource("BoxShape3D_fc3ba")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.2442, -3.48801)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_pylk4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("BoxShape3D_csruc")
