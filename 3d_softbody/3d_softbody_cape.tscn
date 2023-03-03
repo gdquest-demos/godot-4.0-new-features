@@ -1,0 +1,101 @@
+[gd_scene load_steps=11 format=3 uid="uid://r77pq3cqw68m"]
+
+[ext_resource type="PackedScene" uid="uid://c16aelv8g37ck" path="res://shared/sophie_character_controller/sophie_character_controller.tscn" id="1_xcu21"]
+[ext_resource type="Texture2D" uid="uid://bdfgu6dhltmjh" path="res://icon.svg" id="2_52jgm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bqy0h"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_gk8rs"]
+sky_material = SubResource("ProceduralSkyMaterial_bqy0h")
+
+[sub_resource type="Environment" id="Environment_olwgc"]
+background_mode = 2
+sky = SubResource("Sky_gk8rs")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c2y16"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_268et"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_73i4a"]
+size = Vector3(1, 2.21355, 2.02294)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k8rsp"]
+albedo_texture = ExtResource("2_52jgm")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ielf7"]
+size = Vector2(0.5, 1)
+subdivide_width = 5
+subdivide_depth = 20
+
+[node name="3DSoftbodyCape" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_olwgc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_c2y16")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_268et")
+
+[node name="CapeCollider" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21339, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CapeCollider"]
+transform = Transform3D(1, -2.43623e-08, 3.46314e-09, 2.39204e-08, 0.929391, -0.369098, 5.77346e-09, 0.369098, 0.929391, 1.69281e-08, 0.350113, 0.691185)
+shape = SubResource("BoxShape3D_73i4a")
+
+[node name="SophieCharacterController" parent="." instance=ExtResource("1_xcu21")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21339, 0)
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="SophieCharacterController/CharacterRotationRoot" index="1"]
+remote_path = NodePath("../../../CapeCollider")
+
+[node name="SoftBody3D" type="SoftBody3D" parent="SophieCharacterController"]
+transform = Transform3D(-1, 0, -8.74228e-08, -4.37523e-08, 0.865755, 0.500468, 7.56867e-08, 0.500468, -0.865755, 1.19209e-07, 0.634492, -0.357019)
+material_override = SubResource("StandardMaterial3D_k8rsp")
+mesh = SubResource("QuadMesh_ielf7")
+collision_layer = 3
+collision_mask = 3
+parent_collision_ignore = NodePath("..")
+linear_stiffness = 1.0
+damping_coefficient = 0.2
+ray_pickable = false
+pinned_points = [153, 152, 151, 150, 149, 148, 147]
+attachments/0/point_index = 153
+attachments/0/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/0/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+attachments/1/point_index = 152
+attachments/1/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/1/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+attachments/2/point_index = 151
+attachments/2/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/2/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+attachments/3/point_index = 150
+attachments/3/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/3/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+attachments/4/point_index = 149
+attachments/4/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/4/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+attachments/5/point_index = 148
+attachments/5/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/5/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+attachments/6/point_index = 147
+attachments/6/spatial_attachment_path = NodePath("../CharacterRotationRoot")
+attachments/6/offset = Vector3(1.19209e-07, 0.634492, -0.357019)
+
+[editable path="SophieCharacterController"]
